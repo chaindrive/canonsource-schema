@@ -1,0 +1,273 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Canon Schema",
+  "description": "Schema for defining canonical story structures with characters, places, perspectives, compendia, and series",
+  "type": "object",
+  "required": ["name", "authors", "published", "characters", "perspectives", "places", "compendia", "series"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the canonical work"
+    },
+    "authors": {
+      "type": "array",
+      "description": "List of authors who created the work",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "published": {
+      "type": "integer",
+      "description": "Year the work was published",
+      "minimum": 0
+    },
+    "characters": {
+      "type": "array",
+      "description": "List of characters in the canonical work",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The character's full in-world identifier name"
+          },
+          "aliases": {
+            "type": "array",
+            "description": "List of alternative names for the character, known in-universe or out-of-universe",
+            "items": {
+              "type": "string"
+            }
+          },
+          "born": {
+            "type": "string",
+            "description": "Reference to when/where the character was born"
+          },
+          "created": {
+            "type": "string",
+            "description": "Synonym for 'born'"
+          },
+          "activated":{
+            "type": "string",
+            "description": "Reference to when/where the character became active/conscious"
+          },
+          "deactivated": {
+            "type": "string",
+            "description": "Reference to when/where the character became permanently inactive/unconscious"
+          },
+          "destroyed": {
+            "type": "string",
+            "description": "Reference to when/where the character was destroyed or ceased to exist"
+          },
+          "died": {
+            "type": "string",
+            "description": "Synonym for 'destroyed', indicating the character's death"
+          }
+        }
+      }
+    },
+    "perspectives": {
+      "type": "array",
+      "description": "Different narrative perspectives in the canonical work",
+      "items": {
+        "type": "object",
+        "required": ["id", "valid-from", "valid-to"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the perspective"
+          },
+          "valid-from": {
+            "type": "string",
+            "description": "When this perspective starts being valid"
+          },
+          "valid-to": {
+            "type": "string",
+            "description": "When this perspective stops being valid"
+          }
+        }
+      }
+    },
+    "places": {
+      "type": "array",
+      "description": "Locations in the canonical work",
+      "items": {
+        "type": "object",
+        "required": ["id", "created", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the place"
+          },
+          "created": {
+            "type": "string",
+            "description": "When the place was created"
+          },
+          "destroyed": {
+            "type": "string",
+            "description": "When/how the place was destroyed"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the place"
+          }
+        }
+      }
+    },
+    "compendia": {
+      "type": "array",
+      "description": "Thematic folios organizing facts about the canonical work",
+      "items": {
+        "type": "object",
+        "required": ["id", "valid-from", "valid-to", "facts"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the volume"
+          },
+          "valid-from": {
+            "type": "string",
+            "description": "When this volume starts being valid"
+          },
+          "valid-to": {
+            "type": "string",
+            "description": "When this volume stops being valid"
+          },
+          "facts": {
+            "type": "array",
+            "description": "List of facts in this volume",
+            "items": {
+              "type": "object",
+              "required": ["fact"],
+              "properties": {
+                "fact": {
+                  "type": "string",
+                  "description": "A factual statement about the canonical work"
+                },
+                "valid-from": {
+                  "type": "string",
+                  "description": "When this fact starts being valid. If not specified, defaults to the volume's valid-from date"
+                },
+                "valid-to": {
+                  "type": "string",
+                  "description": "When this fact stops being valid. If not specified, defaults to the volume's valid-to date"
+                }
+              }
+            }
+          },
+          "events": {
+            "type": "array",
+            "description": "List of events relevant to this volume that occur outside of specific episodes or series timelines",
+            "items": {
+              "type": "array",
+              "items": [
+                    {
+                        "type": "object",
+                        "required": ["event"],
+                        "properties": {
+                            "event": {
+                                "type": "string",
+                                "description": "Description of the event"
+                            },
+                            "date": {
+                                "type": "string",
+                                "description": "When the event occurs"
+                            }
+                        }
+                    }
+                ]
+            }
+          }
+        }
+      }
+    },
+    "series": {
+      "type": "array",
+      "description": "Series that organize the canonical work into episodes",
+      "items": {
+        "type": "object",
+        "required": ["id", "as-of", "thru-to", "default-perspective", "compendia", "episodes"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the series"
+          },
+          "as-of": {
+            "type": "string",
+            "description": "When the series starts"
+          },
+          "thru-to": {
+            "type": "string",
+            "description": "When the series ends"
+          },
+          "default-perspective": {
+            "type": "string",
+            "description": "Default perspective for the series"
+          },
+          "compendia": {
+            "type": "array",
+            "description": "List of volume references in this series",
+            "items": {
+              "type": "string"
+            }
+          },
+          "episodes": {
+            "type": "array",
+            "description": "Episodes are self-contained stories within the greater series",
+            "items": {
+              "type": "object",
+              "required": ["id", "valid-from", "valid-to", "default-perspective", "facts", "events"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the episode"
+                },
+                "valid-from": {
+                  "type": "string",
+                  "description": "When the episode starts"
+                },
+                "valid-to": {
+                  "type": "string",
+                  "description": "When the episode ends"
+                },
+                "default-perspective": {
+                  "type": "string",
+                  "description": "Default perspective for the episode"
+                },
+                "facts": {
+                  "type": "array",
+                  "description": "Facts specific to this episode",
+                  "items": {
+                    "type": "object",
+                    "required": ["fact"],
+                    "properties": {
+                      "fact": {
+                        "type": "string",
+                        "description": "A factual statement about the episode"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "type": "array",
+                  "description": "Events that occur in this episode",
+                  "items": {
+                    "type": "object",
+                    "required": ["event"],
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "description": "An event that occurs in the episode"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
