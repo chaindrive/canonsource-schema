@@ -5,6 +5,11 @@ JSON Schema that drives the canonsource standard
 
 The Canon Source Schema provides a standardized JSON Schema for representing canonical story structures, fictional universes, and narrative works. It enables consistent documentation and validation of complex storytelling elements including characters, places, temporal relationships, and episodic content.
 
+## Example
+
+For a working example, see:
+https://github.com/canonsource/canon-hansel-and-gretel
+
 ## Purpose
 
 Canon Source addresses the need for a unified approach to documenting fictional works and their canonical elements. Whether you're working with classic literature, modern franchises, or original creative works, this schema provides a structured framework for:
